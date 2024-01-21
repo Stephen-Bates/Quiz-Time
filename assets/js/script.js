@@ -1,22 +1,49 @@
+// Key to localstorage to access highscore data
+const highscoreKey = 'highscores';
+
+// List of recorded highscores
+var highscores = [];
+
+// Create <header> element and its children
 function createHeader(){
     var header = document.createElement('header');
-    var showHighscoreButton = document.createElement('button');
+    var highscoreTable = document.createElement('div');
+    var highscoreList = document.createElement('ol');
 
-    showHighscoreButton.innerHTML = "Highscore";
-    showHighscoreButton.setAttribute('id','show-highscore');
-    showHighscoreButton.addEventListener("click", function(){
-        showHighscoreButton.disabled = true;
-        showHighscoreButton.style.translate = '0 -30px';
-    })
+    highscoreTable.innerHTML = "Highscore Table";
+    highscoreTable.setAttribute('id','highscore-table');
 
-    header.appendChild(showHighscoreButton);
+    highscoreList.setAttribute('id','highscore-list');
+    
+    highscoreTable.appendChild(highscoreList);
+    header.appendChild(highscoreTable);
     document.body.appendChild(header);
 }
 
-function init(){
-    createHeader();
+// Create <main> element and its children
+function createBody(){
 
-    document.querySelector('#show-highscore').style.translate = '0';
+}
+
+// Load highscore data from local storage and save it to highscores variable
+function loadHighscores(){
+    highscores = [];
+    storedScores = JSON.parse(localStorage.getItem(highscoreKey));
+
+    if(storedScores !== null){
+        highscores.push(...storedScores);
+    }
+}
+
+// Save highscores variable to local storage
+function saveHighscores(){
+    localStorage.setItem(highscoreKey, JSON.stringify(highscores));
+}
+
+function init(){
+    loadHighscores();
+    
+    createHeader();
 }
 
 init()

@@ -3,19 +3,13 @@ html {
 }
 
 body {
+    display: flex;
     height: 100%;
-    display: grid;
-    justify-items: center;
+    justify-content: center;
 }
 
-button {
-    font-size: 1rem;
-    background-color: #e0d;
-    border: 5px ridge #90a;
-    border-radius: 0 0 5px 5px;
-    border-style: none ridge ridge ridge;
-}
-#show-highscore {
-    translate: 0 -30px;
+#highscore-table {
+    position: absolute;
+    translate: 0 -0px;
     transition: all 1s;
 }
