@@ -1,15 +1,28 @@
 html {
     height: 100%;
 }
-
+html * {
+    border: 3px solid black;
+}
 body {
-    display: flex;
+    display: grid;
     height: 100%;
     justify-content: center;
 }
+header {
+    width: 100vw;
+    display: grid;
+    justify-items: center;
+}
 
 #highscore-table {
-    position: absolute;
+    width: 80%;
     translate: 0 -0px;
     transition: all 1s;
+}
+
+.highscore-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: space-between;
 }
