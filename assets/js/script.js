@@ -167,15 +167,21 @@ function endQuiz(){
     var score = document.querySelector('#quiz-timer').innerHTML;
     document.querySelector('#main-text-section').innerHTML = `That's the end of the quiz<br>Your final score was: ${score}`;
 
+    var submissionForm = document.createElement('form');
+
     var nameField = document.createElement('input');
     nameField.setAttribute('type', 'text');
+    nameField.setAttribute('id', 'name-field');
     nameField.setAttribute('placeholder', 'Enter your name');
     
     var submitButton = document.createElement('button');
     submitButton.innerHTML = 'Submit Highscore';
-
-
-    document.querySelector('#main-action-section').replaceChildren(nameField, submitButton);
+    submitButton.setAttribute('data-score', score);
+    submissionForm.append(nameField);
+    submissionForm.append(submitButton);
+    submissionForm.addEventListener('submit', addHighscore);
+    
+    document.querySelector('#main-action-section').replaceChildren(submissionForm);
 }
 // Duration in seconds
 function startTimer(duration, stepInterval, stepCallback = null, delayedCallback = null){
@@ -203,12 +209,15 @@ function startTimer(duration, stepInterval, stepCallback = null, delayedCallback
 }
 
 // Add a new highscore to the list
-function addHighscore(newName, newValue){
-    var highscore = {
-        name: newName,
-        value: newValue
-    }
+function addHighscore(event){
+    event.preventDefault();
 
+    var highscore = {
+        name: event.target[0].value,
+        value: event.target[1].dataset.score
+    }
+    console.log(highscore);
+    
     var index = 0
     for (const score of highscores) {
         if (highscore.value <= score.value){
@@ -219,6 +228,7 @@ function addHighscore(newName, newValue){
     
     saveHighscores();
     updateHighscoreTable();
+    mainIntro();
 }
 
 // Load highscore data from local storage and save it to highscores variable
@@ -238,6 +248,7 @@ function saveHighscores(){
 }
 
 function init(){
+    console.log('init');
     createHeader();
     createBody();
 
