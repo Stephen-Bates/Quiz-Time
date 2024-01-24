@@ -1,6 +1,8 @@
 // Key to localstorage to access highscore data
 const highscoreKey = 'highscores';
-
+// Duration of the quiz in seconds
+const quizDuration = 60;
+// Pool of potential questions to be asked
 const questions = [
     {
         question: "Say what?",
@@ -18,6 +20,7 @@ const questions = [
 // List of recorded highscores
 var highscores = [];
 
+var quizTimer;
 // Create <header> element and its children
 function createHeader(){
     var header = document.createElement('header');
@@ -46,10 +49,10 @@ function updateHighscoreTable(){
 
         scoreName.innerHTML = score.name;
         scoreValue.innerHTML = score.value;
-        scoreName.setAttribute('class', 'highscore-item-name');
-        scoreValue.setAttribute('class', 'highscore-item-value');
+        scoreName.classList.add('highscore-item-name');
+        scoreValue.classList.add('highscore-item-value');
         
-        scoreItem.setAttribute('class', 'highscore-item');
+        scoreItem.classList.add('highscore-item');
         scoreItem.appendChild(scoreName);
         scoreItem.appendChild(scoreValue);
 
@@ -57,6 +60,11 @@ function updateHighscoreTable(){
     }
     document.querySelector('#highscore-list').replaceChildren(...scoreItems);
 }
+
+function updateTimer(duration, elapsedTime){
+    document.querySelector('#timer').innerHTML = (duration - elapsedTime / 100).toPrecision(3);        
+}
+
 // Create <main> element and its children
 function createBody(){
     var main = document.createElement('main');
@@ -78,29 +86,72 @@ function mainIntro(){
     button.innerHTML = "Start";
 
     button.addEventListener('click', function(){
-        startTimer(10, mainIntro);
+        startQuiz();
     })
     document.querySelector('#main-action-section').replaceChildren(button);
 }
 
-function startTimer(time, delayedCallback){
+function startQuiz(){
+    quizTimer = startTimer(quizDuration, 10, updateTimer, endQuiz);
+    var unaskedQuestions = [...questions]
+    nextQuestion(unaskedQuestions);
+}
+
+function nextQuestion(unaskedQuestions){
+    // Select a random question from the questions that haven't been asked this round
+    question = unaskedQuestions[Math.floor(Math.random(unaskedQuestions.length))];
+    // Render the question to the screen
+    document.querySelector('#main-text-section').innerHTML = question.question;
+    // Create the list that will hold the anwsers
+    var anwserList = document.createElement('ol');
+    anwserList.setAttribute('id', 'anwser-list');
+    // Create the items that represent the anwsers and add them to the list
+    for (const anwserIndex in question.anwsers) {
+        var anwserItem = document.createElement('button');
+        anwserItem.innerHTML = question.anwsers[anwserIndex];
+
+        if(anwserIndex == question.correct){
+            // Correct anwsers
+            
+        } else {
+            // Incorrect anwsers
+            anwserItem.addEventListener('click', function(){
+                anwserItem.classList.add('wrong-anwser');
+                
+                document.querySelector('#main-action-section').appendChild(document.createElement('hr'));
+            })
+        }
+        anwserList.appendChild(anwserItem);
+    }
+    document.querySelector('#main-action-section').replaceChildren(anwserList);
+}
+
+function endQuiz(){
+    clearInterval(quizTimer);
+
+}
+// Duration in seconds
+function startTimer(duration, stepInterval, stepCallback = null, delayedCallback = null){
     var timeElapsed = 0;
     var timerInterval = setInterval(function() {
         timeElapsed ++;
-        document.querySelector('#timer').innerHTML = (time - timeElapsed / 100).toPrecision(3);
-        if(timeElapsed >= time * 100) {
+        // Call this function each step
+        if(stepCallback !== null){
+            // Passes information about the timer
+            stepCallback(duration, timeElapsed);
+        }
+        if(timeElapsed >= duration * 100) {
             // Stops execution of action at set interval
             clearInterval(timerInterval);
-
-            document.querySelector('#timer').innerHTML = "";
-
-            // Calls function
+            
+            // Call this function on last step
             if(delayedCallback !== null){
                 delayedCallback();
             }
         }
     
-      }, 10);
+      }, stepInterval);
+      return timerInterval;
 }
 
 // Add a new highscore to the list

@@ -15,9 +15,13 @@ main {
     align-items: center;
 }
 #main-text-section{
+    margin: 3rem;
     text-align: center;
 }
-
+#main-action-section{
+    margin: 3rem;
+    width: 60%;
+}
 #highscore-table {
     background-color: violet;
     margin: 2rem;
