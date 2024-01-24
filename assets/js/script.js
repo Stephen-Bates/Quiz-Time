@@ -14,13 +14,23 @@ const questions = [
         ],
         correct: 3
     },
-
+    {
+        question: "Say what? Again",
+        anwsers: [
+            "This, again",
+            "That, again",
+            "The other, again",
+            "All of the above, again"
+        ],
+        correct: 3
+    },
 ]
+var unaskedQuestions = [];
 
 // List of recorded highscores
 var highscores = [];
 
-var quizTimer;
+var quizTimers = [];
 // Create <header> element and its children
 function createHeader(){
     var header = document.createElement('header');
@@ -32,7 +42,7 @@ function createHeader(){
     highscoreTable.innerHTML = "Highscore Table";
     highscoreList.setAttribute('id','highscore-list');
     
-    timerSection.setAttribute('id', 'timer');
+    timerSection.setAttribute('id', 'quiz-timer');
 
     highscoreTable.appendChild(highscoreList);
     header.appendChild(highscoreTable);
@@ -62,7 +72,7 @@ function updateHighscoreTable(){
 }
 
 function updateTimer(duration, elapsedTime){
-    document.querySelector('#timer').innerHTML = (duration - elapsedTime / 100).toPrecision(3);        
+    document.querySelector('#quiz-timer').innerHTML = (duration - elapsedTime / 100).toPrecision(3);        
 }
 
 // Create <main> element and its children
@@ -92,14 +102,23 @@ function mainIntro(){
 }
 
 function startQuiz(){
-    quizTimer = startTimer(quizDuration, 10, updateTimer, endQuiz);
-    var unaskedQuestions = [...questions]
-    nextQuestion(unaskedQuestions);
+    quizTimers.push(startTimer(quizDuration, 10, updateTimer, endQuiz));
+    unaskedQuestions = [...questions];
+    nextQuestion();
 }
 
-function nextQuestion(unaskedQuestions){
+function nextQuestion(){
+    // End the quiz if there are no unasked questions
+    if( unaskedQuestions.length == 0){
+        endQuiz();
+        return;
+    }
+    // Otherwise,
     // Select a random question from the questions that haven't been asked this round
-    question = unaskedQuestions[Math.floor(Math.random(unaskedQuestions.length))];
+    
+    var question = unaskedQuestions[Math.floor(Math.random(unaskedQuestions.length))];
+    unaskedQuestions.splice(unaskedQuestions.indexOf(question), 1);
+    console.log(unaskedQuestions);
     // Render the question to the screen
     document.querySelector('#main-text-section').innerHTML = question.question;
     // Create the list that will hold the anwsers
@@ -108,42 +127,71 @@ function nextQuestion(unaskedQuestions){
     // Create the items that represent the anwsers and add them to the list
     for (const anwserIndex in question.anwsers) {
         var anwserItem = document.createElement('button');
+        anwserItem.classList.add('anwser-item');
         anwserItem.innerHTML = question.anwsers[anwserIndex];
 
-        if(anwserIndex == question.correct){
+        // Create event listeners for the buttons
+        anwserItem.addEventListener('click', function(event){
+            // Disable the buttons to prevent multiple inputs
+            for(item of document.querySelectorAll('.anwser-item')){
+                item.disabled = true;
+            }
             // Correct anwsers
-            
-        } else {
+            if(anwserIndex == question.correct){
+                // Style the button to show correct anwser
+                event.target.classList.add('right-anwser');
+            } 
             // Incorrect anwsers
-            anwserItem.addEventListener('click', function(){
-                anwserItem.classList.add('wrong-anwser');
-                
+            else {
+                // Style the button to show incorrect anwser
+                event.target.classList.add('wrong-anwser');
+                // Create a snippet to inform user what the correct anwser was
+                var correction = document.createElement('p');
+                correction.classList.add('correction');
+                correction.innerHTML = "wrongo bucko";
+                // Add the snippet to the end of the action section
                 document.querySelector('#main-action-section').appendChild(document.createElement('hr'));
-            })
-        }
+                document.querySelector('#main-action-section').appendChild(correction);
+            }
+            // Start a time interval to wait and let user view the outcome, then move to the next question
+            quizTimers.push(startTimer(1,1000,null,nextQuestion));
+        })
         anwserList.appendChild(anwserItem);
     }
     document.querySelector('#main-action-section').replaceChildren(anwserList);
 }
 
 function endQuiz(){
-    clearInterval(quizTimer);
+    console.log('ending quiz');
+    clearInterval(...quizTimers);
+    var score = document.querySelector('#quiz-timer').innerHTML;
+    document.querySelector('#main-text-section').innerHTML = `That's the end of the quiz<br>Your final score was: ${score}`;
 
+    var nameField = document.createElement('input');
+    nameField.setAttribute('type', 'text');
+    nameField.setAttribute('placeholder', 'Enter your name');
+    
+    var submitButton = document.createElement('button');
+    submitButton.innerHTML = 'Submit Highscore';
+
+
+    document.querySelector('#main-action-section').replaceChildren(nameField, submitButton);
 }
 // Duration in seconds
 function startTimer(duration, stepInterval, stepCallback = null, delayedCallback = null){
-    var timeElapsed = 0;
+    var stepsElapsed = 0;
     var timerInterval = setInterval(function() {
-        timeElapsed ++;
+        stepsElapsed ++;
         // Call this function each step
         if(stepCallback !== null){
             // Passes information about the timer
-            stepCallback(duration, timeElapsed);
+            stepCallback(duration, stepsElapsed);
         }
-        if(timeElapsed >= duration * 100) {
+        if(stepsElapsed / (1000/stepInterval) >= duration) {
             // Stops execution of action at set interval
             clearInterval(timerInterval);
-            
+            console.log(delayedCallback);
+        
             // Call this function on last step
             if(delayedCallback !== null){
                 delayedCallback();

@@ -22,6 +22,16 @@ main {
     margin: 3rem;
     width: 60%;
 }
+#anwser-list{
+    display: flex;
+    flex-direction: column;
+}
+.wrong-anwser {
+    background-color: red;
+}
+.right-anwser {
+    background-color: green;
+}
 #highscore-table {
     background-color: violet;
     margin: 2rem;
