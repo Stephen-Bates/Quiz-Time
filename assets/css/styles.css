@@ -1,62 +1,6 @@
-html {
-    height: 100%;
-}
-body {
-    height: 100%;
-}
-header {
-    width: 100vw;
-    height: 10vh;
-}
-main {
-    margin: 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-#main-text-section{
-    margin: 3rem;
-    text-align: center;
-}
-#main-action-section{
-    margin: 3rem;
-    width: 60%;
-}
-#anwser-list{
-    display: flex;
-    flex-direction: column;
-}
-.wrong-anwser {
-    background-color: red;
-}
-.right-anwser {
+.correct-anwser{
     background-color: green;
 }
-#highscore-table {
-    background-color: violet;
-    margin: 2rem;
-    padding: 5px;
-    border: 6px inset blue;
-    border-radius: 10px;
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    width: 60%;
-    display: flex;
-    flex-direction: column-reverse;
-    font-size: 2rem;
-    transform: translate(-50%,100px);
-    transition: transform 1s;
-    text-align: center;
-}
-
-#highscore-list {
-    list-style: decimal;
-    margin: 2rem;
-}
-.highscore-item {
-    display: flex;
-    justify-content: space-between;
-    border: 2px solid blue;
-    border-style: none none solid none;
+.incorrect-anwser{
+    background-color: red;
 }
