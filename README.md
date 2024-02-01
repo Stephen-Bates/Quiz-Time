@@ -14,4 +14,16 @@ N/A
 
 # Usage
 
-The web page can currently be found hosted on Github [here]()
+The web page can currently be found hosted on Github [here](https://stephen-bates.github.io/Quiz-Time/)
+
+The page should resemble the image below:
+
+![Current snapshot of the hosted page](./assets/img/snapshot.png)
+
+## Credits
+
+All HTML, CSS, and Javascript is entirely original and designed by myself
+
+## Liscense
+
+N/A
