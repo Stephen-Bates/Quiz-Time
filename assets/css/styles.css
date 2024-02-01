@@ -1,28 +1,6 @@
-html {
-    height: 100%;
+.correct-anwser{
+    background-color: green;
 }
-html * {
-    border: 3px solid black;
-}
-body {
-    display: grid;
-    height: 100%;
-    justify-content: center;
-}
-header {
-    width: 100vw;
-    display: grid;
-    justify-items: center;
-}
-
-#highscore-table {
-    width: 80%;
-    translate: 0 -0px;
-    transition: all 1s;
-}
-
-.highscore-item {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-content: space-between;
+.incorrect-anwser{
+    background-color: red;
 }
