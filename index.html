@@ -9,11 +9,34 @@
 </head>
 <body>
     <header>
-        <table id="highscore-table"></table>
-        <div id="timer"></div>
+        <!-- Container for the highscore table -->
+        <div id="table-container" class="panel" tabindex="0">
+        <table id="highscore-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><h2>Highscores</h2></td>
+                </tr>
+            </tfoot>
+        </table>
+        </div>
+        <!-- Container for the quiz timer -->
+        <div id="timer-container" class="panel">
+            <div id="timer"></div>
+        </div>
     </header>
     <main>
+        <!-- Javascript will generate elements here -->
     </main>
-    <script src="./assets/js/script.js"></script>
+    <footer>
+        <script src="./assets/js/script.js"></script>
+    </footer>
 </body>
 </html>
