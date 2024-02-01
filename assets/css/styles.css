@@ -1,6 +1,149 @@
+:root{
+    --color-main: #dbe;
+    --color-accent: #693;
+    --color-item: #66a;
+
+    --table-height: 30rem;
+}
+
+html{
+    height: 100vh;
+}
+
+h1 {font-size: 2rem;}
+h2 {font-size: 1.5rem;}
+h3 {font-size: 1.25rem;}
+h4 {font-size: 1.13rem;}
+
+.action {
+    font-size: 1.3rem;
+    background-color: var(--color-item);
+    border-width: 3px;
+    border-radius: 5px;
+}
+
 .correct-anwser{
     background-color: green;
 }
 .incorrect-anwser{
     background-color: red;
+}
+header{
+    height: 10vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.panel {
+    padding: 1rem;
+    background-color: var(--color-main);
+    border: 5px solid var(--color-accent);
+    border-radius: 10px;
+}
+.tip {
+    width: 30vw;
+}
+
+#table-container {
+    height: var(--table-height);
+    position: absolute;
+    bottom: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-style: none solid solid solid;
+    border-radius: 0 0 10px 10px;
+    transform: translateY(3.5rem);
+    transition: transform 1s;
+}
+#table-container:focus{
+    transform: translateY(calc(var(--table-height) + 2rem));
+}
+
+#highscore-table{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#highscore-table tr{
+    display: flex;
+    justify-content: space-between;
+}
+
+#highscore-table thead{
+    padding: 4px;
+    font-weight: bolder;
+}
+#highscore-table tbody{
+    background-color: #00000022;
+    height: 100%;
+    width: 40vw;
+}
+#highscore-table tbody tr:nth-child(odd){
+    background-color: #00000022;
+}
+
+#highscore-table tfoot{
+    margin: 1rem 0 0 0;
+    background-color: #00000022;
+}
+#highscore-table tfoot tr{
+    justify-content: center;
+}
+
+#timer-container{
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    width: 4rem;
+    height: 4rem;
+    padding: 0;
+    border-radius: 50%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 2rem;
+}
+#timer-container div{
+    border-radius: inherit;
+    width: 2rem;
+    height: 2rem;
+    padding: 1rem;
+}
+main {
+    width: 80%;
+    height: 100vh;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+main > *{
+    margin: 1rem;
+}
+main h2{
+    vertical-align: middle;
+    max-width: 50vw;
+    padding: 1rem;
+    border-radius: 5px;
+    background-color: var(--color-main);
+}
+button{
+    width: 20vw;
+    
+}
+#anwser-list{
+    width: 40vw;
+}
+
+#anwser-list button{
+    height: 3rem;
+    width: 80%;
+    text-align: left;
+    margin-top: .5rem;
+}
+
+form input {
 }
