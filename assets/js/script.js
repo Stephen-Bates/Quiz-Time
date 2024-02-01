@@ -141,7 +141,7 @@ function startQuiz(){
 // Return elements for a question scene
 function questionScene(){
     // Select a random question from the questions that haven't been asked this round
-    currentQuestion = unaskedQuestions[Math.floor(Math.random(unaskedQuestions.length))];
+    currentQuestion = unaskedQuestions[Math.floor(Math.random() * unaskedQuestions.length)];
     // Remove selected question from unasked list of questions
     unaskedQuestions.splice(unaskedQuestions.indexOf(currentQuestion), 1);
     // Render the question to the screen
